@@ -59,3 +59,35 @@ let CreateCSVTable (x:string list) =
     let z = MapCreateRow x |> List.choose id 
     {HeaderRow=z.Head; Rows=z|>List.except [z.Head]; LongestFirstColumnEntry= RowToFirstColumnLength z; LongestSecondColumnEntry= RowToSecondColumnLength z ; LongestThirdColumnEntry= RowToThirdColumnLength z ; LongestFourthCoulumnEntry = RowToFourthColumnLength z ;}
 
+let minus = "-"
+
+let addPlus x = x + "+"
+
+let NumberOfMinusPlusPlus x = String.replicate x minus |> addPlus
+
+let whiteSpace = " "
+
+let newLine = "\n"
+
+let columnSeperator = "|"
+
+let CreateSeperationRow x y z t = 
+    NumberOfMinusPlusPlus x + NumberOfMinusPlusPlus y + NumberOfMinusPlusPlus z + NumberOfMinusPlusPlus t + newLine
+
+let PrintRowPart content columnWidth fillUpString endString=
+    content + (String.replicate (columnWidth - content.Length) fillUpString) + endString
+
+let BakedPrintRowPart content columnWidth endString = PrintRowPart content columnWidth whiteSpace endString
+
+let PrintRow row widthFirstColumn widthSecondColumn widthThirdColumn widthFourthColumn =
+    let first = BakedPrintRowPart row.Name widthFirstColumn columnSeperator
+    let second = BakedPrintRowPart row.Strasse widthSecondColumn  columnSeperator
+    let third = BakedPrintRowPart row.Ort widthThirdColumn columnSeperator
+    let fourth = BakedPrintRowPart row.Alter widthFourthColumn columnSeperator + newLine
+    first + second + third + fourth
+
+let printCSVTable (x:CSVTable) =
+    let headerRowString = PrintRow x.HeaderRow x.LongestFirstColumnEntry x.LongestSecondColumnEntry x.LongestThirdColumnEntry x.LongestFourthCoulumnEntry
+    let transitionRow = CreateSeperationRow x.LongestFirstColumnEntry x.LongestSecondColumnEntry x.LongestThirdColumnEntry x.LongestFourthCoulumnEntry
+    let dataRows = List.map (fun y -> PrintRow y x.LongestFirstColumnEntry x.LongestSecondColumnEntry x.LongestThirdColumnEntry x.LongestFourthCoulumnEntry ) x.Rows
+    headerRowString + transitionRow + String.concat "" dataRows
