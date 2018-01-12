@@ -89,7 +89,7 @@ let PrintRow row widthFirstColumn widthSecondColumn widthThirdColumn widthFourth
     first + second + third + fourth
 
 let printCSVTable (x:CSVTable) =
-    let headerRowString = PrintRow x.HeaderRow x.LongestFirstColumnEntry x.LongestSecondColumnEntry x.LongestThirdColumnEntry x.LongestFourthCoulumnEntry
-    let transitionRow = CreateSeperationRow x.LongestFirstColumnEntry x.LongestSecondColumnEntry x.LongestThirdColumnEntry x.LongestFourthCoulumnEntry
-    let dataRows = List.map (fun y -> PrintRow y x.LongestFirstColumnEntry x.LongestSecondColumnEntry x.LongestThirdColumnEntry x.LongestFourthCoulumnEntry ) x.Rows
+    let headerRowString = PrintRow x.HeaderRow (ColumnLengthValue x.LongestFirstColumnEntry) (ColumnLengthValue x.LongestSecondColumnEntry) (ColumnLengthValue x.LongestThirdColumnEntry) (ColumnLengthValue x.LongestFourthCoulumnEntry)
+    let transitionRow = CreateSeperationRow (ColumnLengthValue x.LongestFirstColumnEntry) (ColumnLengthValue x.LongestSecondColumnEntry) (ColumnLengthValue x.LongestThirdColumnEntry) (ColumnLengthValue x.LongestFourthCoulumnEntry)
+    let dataRows = List.map (fun y -> PrintRow y (ColumnLengthValue x.LongestFirstColumnEntry) (ColumnLengthValue x.LongestSecondColumnEntry) (ColumnLengthValue x.LongestThirdColumnEntry) (ColumnLengthValue x.LongestFourthCoulumnEntry) ) x.Rows
     headerRowString + transitionRow + String.concat "" dataRows
