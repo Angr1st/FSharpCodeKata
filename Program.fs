@@ -1,9 +1,7 @@
 ﻿// Learn more about F# at http://fsharp.org
 
-open System
-open CSVTable
-
 [<EntryPoint>]
 let main argv =
-    printfn "Hello World from F#!"
+    let argList = Array.toList argv
+    printf "%s" <|(CSVTable.CreateCSVTable argList |> CSVTable.printCSVTable)
     0 // return an integer exit code
