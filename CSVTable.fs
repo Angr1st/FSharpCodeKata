@@ -7,6 +7,8 @@ let CreateColumnLength (x:int) =
         then Some (ColumnLength x) 
         else None
 
+let ColumnLengthValue (ColumnLength e) = e
+
 type Row={ 
     Name:string
     Strasse:string
