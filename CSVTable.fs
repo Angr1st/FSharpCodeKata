@@ -1,4 +1,5 @@
 module CSVTable
+open System.Security.Principal
 type ColumnLength= ColumnLength of int
 
 let CreateColumnLength (x:int) =
@@ -32,11 +33,29 @@ type CSVTable ={
     LongestFourthCoulumnEntry:ColumnLength
 }
 
+//let TurnStringListIntoRowList (x:string list)= 
+
+let MapCreateRow (x:string list) =
+    List.map (fun z-> CreateRow z [|';'|]) x
+
+let RowToFirstColumnLength x = 
+   let t = x |> List.maxBy (fun y -> y.FirstColumnLength)
+   t.FirstColumnLength 
+
+let RowToSecondColumnLength x = 
+   let t = x |> List.maxBy (fun y -> y.SecondColumnLength)
+   t.SecondColumnLength 
+
+let RowToThirdColumnLength x = 
+   let t = x |> List.maxBy (fun y -> y.ThirdColumnLength)
+   t.ThirdColumnLength
+
+let RowToFourthColumnLength x = 
+   let t = x |> List.maxBy (fun y -> y.FourthColumnLength)
+   t.FourthColumnLength  
+
+
 let CreateCSVTable (x:string list) =
-    let z = x |> List.map (CreateRow i ';') |> List.filter (fun r-> match r with 
-        |Row -> true 
-        |None -> false)
-    if !z.IsEmpty
-        then None
-        Else Some {HeaderRow=z.Head; Rows=z|>List.except z.Head; LongestFirstColumnEntry= z |> List.maxBy (fun y -> y.LongestFirstColumnEntry); LongestSecondColumnEntry= z |> List.maxBy (fun y -> y.LongestSecondColumnEntry); LongestThirdColumnEntry= z |> List.maxBy (fun y -> y.LongestThirdColumnEntry); LongestFourthColumnEntry= z |> List.maxBy (fun y -> y.LongestFourthColumnEntry);}
+    let z = MapCreateRow x |> List.choose id 
+    {HeaderRow=z.Head; Rows=z|>List.except [z.Head]; LongestFirstColumnEntry= RowToFirstColumnLength z; LongestSecondColumnEntry= RowToSecondColumnLength z ; LongestThirdColumnEntry= RowToThirdColumnLength z ; LongestFourthCoulumnEntry = RowToFourthColumnLength z ;}
 
