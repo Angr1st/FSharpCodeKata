@@ -12,7 +12,7 @@ type RomanNumerals =
     |M
 
 let split (x:string) =
-    [for c in x -> c]
+    [for c in x.ToUpper() -> c]
 
 let createRomanNumeral x =
     match x with
@@ -43,7 +43,7 @@ let addOrSubstract (x:int) (y:int) =
         then (x+y)
     elif x = 0 && y >=1
         then y
-    else (x-1)
+    else (y-x)
 
 let turnStringIntoInt (x:string) =
     split x |> List.map createRomanNumeral |> cleanOutNone |> List.map turnToInt
@@ -57,7 +57,14 @@ let newLine = "\n"
 let printIntArray (x:int[]) =
     Array.map (fun y -> y.ToString()) x |> Array.reduce (fun c v -> c + newLine + v)
 
+let argc = [|"I"; "II"; "IV"; "IX"; "XLII"; "XCIX"; "MMXIII"|]
+
+let decideIfExampleOrInput (args:string[]) =
+    if Array.isEmpty args
+        then argc
+        else args
+
 [<EntryPoint>]
 let main argv =
-    printfn "%s" <| (glueTogether argv |> printIntArray)
+    printfn "%s" <| (decideIfExampleOrInput argv |> glueTogether |> printIntArray)
     0 // return an integer exit code
