@@ -46,7 +46,7 @@ let addOrSubstract (x:int) (y:int) =
     else (x-1)
 
 let turnStringIntoInt (x:string) =
-    split x |>List.map createRomanNumeral |> cleanOutNone |> List.map turnToInt
+    split x |> List.map createRomanNumeral |> cleanOutNone |> List.map turnToInt
 
 let glueTogether (x:string[]) =
     let arrayOfIntList = Array.map (turnStringIntoInt >> (List.fold addOrSubstract 0)) x
