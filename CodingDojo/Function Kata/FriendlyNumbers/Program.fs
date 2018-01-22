@@ -2,20 +2,26 @@
 
 open System
 
-let return10Potenz x =
-    if x <=1
-        then 1
-    else pown 10 x
+type HappySad=
+    |Happy
+    |Sad of string
 
-let listOfZehnerPotenz = seq { for i in 1 .. 100000 -> return10Potenz i }
+let splitString (x:String) =
+    x.ToCharArray()
 
-let rec turnIntoIndividualNumbers x y=
-    let modResult = x % y
-    if modResult >= 0
-        then x
-    elif modResult >= 10
-        then 
-    
+let charToInt (x:char)=
+    Int32.Parse <| x.ToString()
+
+let intTimesTwo (x:int)=
+    pown x 2
+
+let from10to20 = seq { 10..20}
+
+let arrayOfIntIs1 (x:int []) =
+    let result = Array.sum x
+    if result = 1
+        then Happy
+        else Sad <| result.ToString()
 
 [<EntryPoint>]
 let main argv =
