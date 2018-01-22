@@ -26,6 +26,9 @@ type RecordInitial= {
 let createRecordInitial x y =
     { InitialNumber = x; Result =y}
 
+let createInitialRecordInitial x=
+    {InitialNumber = x; Result = Maybe x}
+
 let arrayOfIntIs1 (x:int []) =
     let result = Array.sum x
     if result = 1
@@ -48,6 +51,16 @@ let turnToStringOption (x:HappySadMaybe) =
     |Maybe a -> Some a
     |Happy | Sad -> None
 
+let newLine = "\n"
+
+let printHappySadMaybe x =
+    match x with
+    |Happy -> "Happy"
+    |Sad -> "Sad"
+    |Maybe a -> a
+
+let printRecordInitial x =
+   x.InitialNumber + "is a" + printHappySadMaybe x.Result + newLine 
 
 [<EntryPoint>]
 let main argv =
