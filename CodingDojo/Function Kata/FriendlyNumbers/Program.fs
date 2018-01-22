@@ -2,7 +2,7 @@
 
 open System
 
-type HappySad=
+type HappySadMaybe=
     |Happy
     |Maybe of string
     |Sad
@@ -18,6 +18,14 @@ let intTimesTwo (x:int)=
 
 let from10to20 = seq { 10..20}
 
+type RecordInitial= {
+    InitialNumber : string
+    Result : HappySadMaybe
+}
+
+let createRecordInitial x y =
+    { InitialNumber = x; Result =y}
+
 let arrayOfIntIs1 (x:int []) =
     let result = Array.sum x
     if result = 1
@@ -26,15 +34,20 @@ let arrayOfIntIs1 (x:int []) =
         then Sad
         else Maybe <| result.ToString()
 
-let fromStringToResult x =
-    Array.map (charToInt >> intTimesTwo) (splitString x) |> arrayOfIntIs1
+let fromStringToResult (x: RecordInitial) y=
+    Array.map (charToInt >> intTimesTwo) (splitString y) |> arrayOfIntIs1 |> createRecordInitial x.InitialNumber
 
-let doUntilHappyOrSad (x:HappySad)=
+let doUntilHappyOrSad (x:HappySadMaybe)=
     match x with  
-        |Happy -> Happy
-        |Sad -> Sad
-        |Maybe a -> a
+        |Happy -> false
+        |Sad -> false
+        |Maybe _ -> true
     
+let turnToStringOption (x:HappySadMaybe) =
+    match x with
+    |Maybe a -> Some a
+    |Happy | Sad -> None
+
 
 [<EntryPoint>]
 let main argv =
