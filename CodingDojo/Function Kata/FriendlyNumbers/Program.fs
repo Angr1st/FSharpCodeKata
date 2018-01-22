@@ -4,7 +4,8 @@ open System
 
 type HappySad=
     |Happy
-    |Sad of string
+    |Maybe of string
+    |Sad
 
 let splitString (x:String) =
     x.ToCharArray()
@@ -21,7 +22,19 @@ let arrayOfIntIs1 (x:int []) =
     let result = Array.sum x
     if result = 1
         then Happy
-        else Sad <| result.ToString()
+    elif result = 2
+        then Sad
+        else Maybe <| result.ToString()
+
+let fromStringToResult x =
+    Array.map (charToInt >> intTimesTwo) (splitString x) |> arrayOfIntIs1
+
+let doUntilHappyOrSad (x:HappySad)=
+    match x with  
+        |Happy -> Happy
+        |Sad -> Sad
+        |Maybe a -> a
+    
 
 [<EntryPoint>]
 let main argv =
