@@ -37,7 +37,7 @@ let arrayOfIntIs1 (x:int []) =
         then Sad
         else Maybe <| result.ToString()
 
-let fromStringToResult (x: RecordInitial) y=
+let fromStringToResult  y (x: RecordInitial)=
     Array.map (charToInt >> intTimesTwo) (splitString y) |> arrayOfIntIs1 |> createRecordInitial x.InitialNumber
 
 let doUntilHappyOrSad (x:HappySadMaybe)=
@@ -62,6 +62,18 @@ let printHappySadMaybe x =
 let printRecordInitial x =
    x.InitialNumber + "is a" + printHappySadMaybe x.Result + newLine 
 
+let fromStringToRecordTypeToResult x =
+    let firstResult = createInitialRecordInitial x |> fromStringToResult x 
+    if doUntilHappyOrSad firstResult.Result
+        then fromRecordTypeToResult firstResult.Result
+        else printRecordInitial firstResult
+
+let fromRecordTypeToResult x =
+    match x with
+    |Happy -> Happy
+    |Sad -> Sad
+    |Maybe a -> fromStringToRecordTypeToResult a
+    
 [<EntryPoint>]
 let main argv =
     printfn "Hello World from F#!"
